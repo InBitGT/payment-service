@@ -13,8 +13,5 @@ WORKDIR /root/
 # Copiar el binario
 COPY --from=builder /app/app .
 
-# Copiar el archivo .env
-COPY .env .
-
 EXPOSE 8086
 CMD ["./app"]
