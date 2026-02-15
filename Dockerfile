@@ -10,7 +10,7 @@ RUN go build -o app main.go
 FROM alpine:latest
 WORKDIR /root/
 
-# Copiar el binario
+# Copiar el binario 
 COPY --from=builder /app/app .
 
 EXPOSE 8086
