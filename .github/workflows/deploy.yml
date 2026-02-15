@@ -34,8 +34,9 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ghcr.io/inbitgt/payment-service:latest
+            ghcr.io/inbitgt/payment-service:${{ github.sha }}
+
 
       - name: Deploy on Droplet (payment-service only)
         uses: appleboy/ssh-action@v1.2.0
