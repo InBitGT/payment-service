@@ -3,7 +3,6 @@ module payment-service
 go 1.24.5
 
 require (
-	github.com/InBitGT/proto-definitions v0.0.0-20260310072429-62f2df3857a3
 	github.com/InBitGT/senti-shared-library v1.0.3
 	github.com/gin-gonic/gin v1.11.0
 	github.com/joho/godotenv v1.5.1
@@ -13,6 +12,7 @@ require (
 )
 
 require (
+	github.com/InBitGT/proto-definitions v0.0.0-20260310072429-62f2df3857a3 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
 	github.com/bytedance/sonic v1.15.0 // indirect
 	github.com/bytedance/sonic/loader v0.5.0 // indirect
