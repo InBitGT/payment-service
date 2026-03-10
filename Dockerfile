@@ -1,5 +1,7 @@
 FROM golang:1.24-alpine AS builder
 
+ARG GITHUB_TOKEN
+
 RUN apk add --no-cache git
 RUN git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 
