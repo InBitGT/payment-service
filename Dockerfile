@@ -1,5 +1,11 @@
 FROM golang:1.24-alpine AS builder
 
+RUN apk add --no-cache git
+RUN git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+
+ENV GONOSUMDB="github.com/InBitGT/*"
+ENV GOPRIVATE="github.com/InBitGT/*"
+
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download

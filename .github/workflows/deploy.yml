@@ -36,6 +36,9 @@ jobs:
           tags: |
             ghcr.io/inbitgt/payment-service:latest
             ghcr.io/inbitgt/payment-service:${{ github.sha }}
+          build-args: |
+            GITHUB_TOKEN=${{ secrets.GHCR_PAT }}
+
 
 
       - name: Deploy on Droplet (payment-service only)

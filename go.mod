@@ -3,7 +3,7 @@ module payment-service
 go 1.24.5
 
 require (
-	github.com/InBitGT/proto-definitions v0.0.0-00010101000000-000000000000
+	github.com/InBitGT/proto-definitions v0.0.0-20260310072429-62f2df3857a3
 	github.com/InBitGT/senti-shared-library v1.0.3
 	github.com/gin-gonic/gin v1.11.0
 	github.com/joho/godotenv v1.5.1
@@ -51,5 +51,3 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )
-
-replace github.com/InBitGT/proto-definitions v0.0.0-00010101000000-000000000000 => ./proto
