@@ -28,22 +28,24 @@ func (r *suscriptionRepository) Create(data *model.Suscription) error {
 
 func (r *suscriptionRepository) FindByID(id uint) (*model.Suscription, error) {
 	var suscription model.Suscription
-	err := r.db.First(&suscription, id).Error
+	err := r.db.Where("status = ?", true).First(&suscription, id).Error
 	return &suscription, err
 }
 
 func (r *suscriptionRepository) FindAll() ([]model.Suscription, error) {
 	var suscription []model.Suscription
-	err := r.db.Find(&suscription).Error
+	err := r.db.Where("status = ?", true).Find(&suscription).Error
 	return suscription, err
 }
 
 func (r *suscriptionRepository) Update(suscription *model.Suscription) error {
-	return r.db.Save(suscription).Error
+	return r.db.Model(&model.Suscription{}).
+		Where("id_suscription = ? AND status = ?", suscription.ID, true).
+		Updates(suscription).Error
 }
 
 func (r *suscriptionRepository) Delete(id uint) error {
 	return r.db.Model(&model.Suscription{}).
 		Where("id_suscription = ?", id).
-		Update("status", "false").Error
+		Update("status", false).Error
 }

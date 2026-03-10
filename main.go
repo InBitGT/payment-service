@@ -1,22 +1,21 @@
 package main
 
 import (
+	"os"
+	"payment-service/db"
 	"payment-service/internal/config"
-
-	"github.com/gin-gonic/gin"
+	"payment-service/internal/server"
 )
 
 func main() {
 	config.Init()
 
-	router := gin.Default()
+	database := db.Database()
 
-	router.GET("/payment-service/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	app := server.NewApp(database)
 
-	port := config.GetPort()
-	router.Run(":" + port)
+	port := os.Getenv("GRPC_PORT")
+	go config.StartGRPCServer(database, port)
+
+	app.RunHTTP(config.GetPort())
 }

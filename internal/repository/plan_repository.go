@@ -28,22 +28,24 @@ func (r *planRepository) Create(data *model.Plan) error {
 
 func (r *planRepository) FindByID(id uint) (*model.Plan, error) {
 	var plan model.Plan
-	err := r.db.First(&plan, id).Error
+	err := r.db.Where("status = ?", true).First(&plan, id).Error
 	return &plan, err
 }
 
 func (r *planRepository) FindAll() ([]model.Plan, error) {
 	var plan []model.Plan
-	err := r.db.Find(&plan).Error
+	err := r.db.Where("status = ?", true).Find(&plan).Error
 	return plan, err
 }
 
 func (r *planRepository) Update(plan *model.Plan) error {
-	return r.db.Save(plan).Error
+	return r.db.Model(&model.Plan{}).
+		Where("id_plan = ? AND status = ?", plan.ID, true).
+		Updates(plan).Error
 }
 
 func (r *planRepository) Delete(id uint) error {
 	return r.db.Model(&model.Plan{}).
 		Where("id_plan = ?", id).
-		Update("status", "false").Error
+		Update("status", false).Error
 }
