@@ -1,0 +1,59 @@
+name: Build & Deploy (payment-service)
+
+on:
+  push:
+    branches: ["develop"]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: payment-service
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR (push)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: |
+            ghcr.io/inbitgt/payment-service:latest
+            ghcr.io/inbitgt/payment-service:${{ github.sha }}
+          build-args: |
+            GITHUB_TOKEN=${{ secrets.GHCR_PAT }}
+
+
+
+      - name: Deploy on Droplet (payment-service only)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            set -e
+            cd /home/deploy/senti
+
+            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USER }}" --password-stdin
+
+            docker-compose -f docker-compose.yml pull payment-service
+            docker-compose -f docker-compose.yml up -d --remove-orphans payment-service
+
+            docker image prune -f
