@@ -15,4 +15,4 @@ type Suscription struct {
 	UpdatedAt  time.Time `json:"update_at" gorm:"column:update_at;type:timestamptz;autoUpdateTime"`
 }
 
-func (Suscription) TableName() string { return "suscription" }
+func (Suscription) TableName() string { return "payments.suscription" }
