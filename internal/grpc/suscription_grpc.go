@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 	"payment-service/internal/model"
 	"time"
 
@@ -9,7 +10,6 @@ import (
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
-	planpb "github.com/InBitGT/proto-definitions/payment/plan"
 	suscriptionpb "github.com/InBitGT/proto-definitions/payment/suscription"
 )
 
@@ -44,11 +44,14 @@ func (s *SuscriptionServer) CreateSuscription(ctx context.Context, req *suscript
 		EndAt:      endAt,
 	}
 
+	fmt.Println("valores de la sub", sub)
+
 	if err := s.db.WithContext(ctx).Create(&sub).Error; err != nil {
+		fmt.Println("valores de errpr", err)
 		return nil, status.Errorf(codes.Internal, "error creating suscription: %v", err)
 	}
 
-	return toSuscriptionResponse(&sub), nil
+	return toSuscriptionResponse(), nil
 }
 
 func (s *SuscriptionServer) GetSuscription(ctx context.Context, req *suscriptionpb.GetSuscriptionRequest) (*suscriptionpb.SuscriptionResponse, error) {
@@ -57,28 +60,11 @@ func (s *SuscriptionServer) GetSuscription(ctx context.Context, req *suscription
 		return nil, status.Errorf(codes.NotFound, "suscription %d not found", req.Id)
 	}
 
-	return toSuscriptionResponse(&sub), nil
+	return toSuscriptionResponse(), nil
 }
 
-func toSuscriptionResponse(sub *model.Suscription) *suscriptionpb.SuscriptionResponse {
+func toSuscriptionResponse() *suscriptionpb.SuscriptionResponse {
 	return &suscriptionpb.SuscriptionResponse{
-		Id:       uint64(sub.ID),
-		TenantId: uint64(sub.TenantID),
-		PlanId:   uint64(sub.PlanID),
-		Plan: &planpb.PlanResponse{
-			Id:          uint64(sub.Plan.ID),
-			Name:        sub.Plan.Name,
-			Price:       sub.Plan.Price,
-			Description: sub.Plan.Description,
-			Status:      sub.Plan.Status,
-			CreatedAt:   sub.Plan.CreatedAt.Format(time.RFC3339),
-			UpdatedAt:   sub.Plan.UpdatedAt.Format(time.RFC3339),
-		},
-		AstartedAt: sub.AStartedAt.Format(time.RFC3339),
-		RenewAt:    sub.RenewAt.Format(time.RFC3339),
-		EndAt:      sub.EndAt.Format(time.RFC3339),
-		Status:     sub.Status,
-		CreatedAt:  sub.CreatedAt.Format(time.RFC3339),
-		UpdatedAt:  sub.UpdatedAt.Format(time.RFC3339),
+		Success: true,
 	}
 }

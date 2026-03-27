@@ -12,4 +12,4 @@ type Plan struct {
 	UpdatedAt   time.Time `json:"update_at" gorm:"column:update_at;type:timestamptz;autoUpdateTime"`
 }
 
-func (Plan) TableName() string { return "plan" }
+func (Plan) TableName() string { return "payments.plan" }

@@ -1,5 +1,3 @@
-github.com/InBitGT/proto-definitions v0.0.0-20260310072429-62f2df3857a3 h1:T7mzDkt6usgJMz/SFI0Fd46T/GjYmFdqweQbOKsUjIQ=
-github.com/InBitGT/proto-definitions v0.0.0-20260310072429-62f2df3857a3/go.mod h1:0Ms1bz/h59mRpBvF1fRcqPFLqFAZ/x/La7KHecF77R0=
 github.com/InBitGT/senti-shared-library v1.0.3 h1:rX3/LmpXBIOkXj4mfuF2dnJrMYJfH+22JZl69GfaQzc=
 github.com/InBitGT/senti-shared-library v1.0.3/go.mod h1:xrDDhtFQxWDBG7oNn8C5Ui5ctHoG7JVJe8ox+VhCS8o=
 github.com/bytedance/gopkg v0.1.3 h1:TPBSwH8RsouGCBcMBktLt1AymVo2TVsBVCY4b6TnZ/M=

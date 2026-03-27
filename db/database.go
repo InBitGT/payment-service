@@ -10,8 +10,10 @@ import (
 )
 
 var Database = func() (db *gorm.DB) {
-	if err := godotenv.Load(); err != nil {
-		fmt.Println("Warning: .env file not found, using environment variables")
+	errorVariables := godotenv.Load()
+	if errorVariables != nil {
+		panic(errorVariables)
+
 	}
 
 	dsn := fmt.Sprintf(
@@ -31,7 +33,7 @@ var Database = func() (db *gorm.DB) {
 	}), &gorm.Config{})
 
 	if err != nil {
-		fmt.Println("error en conexion")
+		fmt.Println("error en  conexion")
 		panic(err)
 	}
 
@@ -40,11 +42,11 @@ var Database = func() (db *gorm.DB) {
 	// 1. Crear el schema si no existe
 	db.Exec(fmt.Sprintf(`CREATE SCHEMA IF NOT EXISTS "%s"`, schema))
 
-	// 2. Aplicar search_path a nivel de usuario
-	db.Exec(fmt.Sprintf(`ALTER ROLE "%s" SET search_path TO "%s"`, os.Getenv("DB_USER"), schema))
+	// // 2. Aplicar search_path a nivel de usuario
+	// db.Exec(fmt.Sprintf(`ALTER ROLE "%s" SET search_path TO "%s"`, os.Getenv("DB_USER"), schema))
 
-	// 3. Aplicar search_path en la sesión actual
-	db.Exec(fmt.Sprintf(`SET search_path TO "%s"`, schema))
+	// // 3. Aplicar search_path en la sesión actual
+	// db.Exec(fmt.Sprintf(`SET search_path TO "%s"`, schema))
 
 	fmt.Println("conexion exitosa")
 	return db
