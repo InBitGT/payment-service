@@ -17,6 +17,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
+          token: ${{ secrets.GHCR_PAT }}
+
+      - name: Init submodules
+        run: |
+          git config --global url."https://${{ secrets.GHCR_PAT }}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${{ secrets.GHCR_PAT }}@github.com/".insteadOf "git@github.com:"
+          git submodule update --init --recursive
+          cd proto
+          git checkout main
+          git pull origin main
+          cd ..
+          echo "=== Contenido de proto/ ==="
+          ls -la proto/
 
       - uses: docker/setup-buildx-action@v3
 
@@ -38,8 +53,7 @@ jobs:
             ghcr.io/inbitgt/payment-service:${{ github.sha }}
           build-args: |
             GITHUB_TOKEN=${{ secrets.GHCR_PAT }}
-
-
+          provenance: false
 
       - name: Deploy on Droplet (payment-service only)
         uses: appleboy/ssh-action@v1.2.0
