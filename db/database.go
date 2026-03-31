@@ -10,10 +10,8 @@ import (
 )
 
 var Database = func() (db *gorm.DB) {
-	errorVariables := godotenv.Load()
-	if errorVariables != nil {
-		panic(errorVariables)
-
+	if err := godotenv.Load(); err != nil {
+		fmt.Println(".env no encontrado, usando variables del sistema")
 	}
 
 	dsn := fmt.Sprintf(
